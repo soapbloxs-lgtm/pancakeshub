@@ -10,104 +10,222 @@
 
 <style>
 :root{--bg:#050508;--neon:#00fff7;--pink:#ff00ff;--text:#e6f7ff}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif}
-body{background:radial-gradient(circle at top,#0a0a18,var(--bg));color:var(--text)}
 
-/* LOADING SCREEN */
-#loadingScreen{
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif}
+
+body{
+background:radial-gradient(circle at top,#0a0a18,var(--bg));
+color:var(--text);
+overflow-x:hidden;
+}
+
+/* ===== NEON GRID BACKGROUND ===== */
+
+body::before{
+content:"";
 position:fixed;
 inset:0;
-background:#050508;
+background:
+linear-gradient(rgba(0,255,247,0.08) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,0,255,0.08) 1px, transparent 1px);
+background-size:60px 60px;
+animation:gridMove 12s linear infinite;
+z-index:-1;
+}
+
+@keyframes gridMove{
+0%{transform:translateY(0)}
+100%{transform:translateY(60px)}
+}
+
+/* ===== COVER ===== */
+
+.cover{
+height:100vh;
 display:flex;
 flex-direction:column;
 justify-content:center;
-align-items:center;
-z-index:20000;
+align-items:center
 }
 
-#loadingScreen h1{
+.cover h1{
+font-size:4rem;
 color:var(--pink);
-font-size:3rem;
-margin-bottom:20px;
+animation:textGlow 2.5s infinite alternate;
 }
 
-#loadingBar{
-width:300px;
-height:12px;
-border-radius:20px;
-background:#111;
-overflow:hidden;
+.cover button{
+margin-top:20px;
+padding:18px 40px;
+border:3px solid var(--neon);
+background:transparent;
+color:var(--neon);
+border-radius:12px;
+cursor:pointer;
+animation:neonPulse 3s infinite;
 }
 
-#loadingProgress{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#00fff7,#ff00ff);
-animation:loadbar 8s linear forwards;
+/* ===== NAV ===== */
+
+nav{
+display:none;
+text-align:center;
+padding:15px;
+border-bottom:1px solid rgba(0,255,247,.2)
 }
 
-@keyframes loadbar{
-to{width:100%;}
+nav button{
+margin:6px;
+padding:10px 20px;
+border:2px solid var(--neon);
+background:transparent;
+color:var(--neon);
+border-radius:8px;
+cursor:pointer;
+animation:neonPulse 3s infinite;
 }
 
-.cover{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center}
-.cover h1{font-size:4rem;color:var(--pink)}
-.cover button{margin-top:20px;padding:18px 40px;border:3px solid var(--neon);background:transparent;color:var(--neon);border-radius:12px;cursor:pointer}
-
-nav{display:none;text-align:center;padding:15px;border-bottom:1px solid rgba(0,255,247,.2)}
-nav button{margin:6px;padding:10px 20px;border:2px solid var(--neon);background:transparent;color:var(--neon);border-radius:8px;cursor:pointer}
+/* ===== TABS ===== */
 
 .tab{display:none;padding:25px;max-width:1500px;margin:auto}
 .tab.active{display:block}
 
-.controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
-.controls input,.controls select,.controls button{
-padding:10px;border-radius:8px;border:2px solid var(--pink);
-background:black;color:var(--pink)
+/* ===== CONTROLS ===== */
+
+.controls{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:20px
 }
 
-.most-played{margin-bottom:25px;padding:15px;border:2px solid var(--neon);border-radius:14px}
+.controls input,.controls select,.controls button{
+padding:10px;
+border-radius:8px;
+border:2px solid var(--pink);
+background:black;
+color:var(--pink)
+}
+
+/* ===== MOST PLAYED ===== */
+
+.most-played{
+margin-bottom:25px;
+padding:15px;
+border:2px solid var(--neon);
+border-radius:14px
+}
+
 .most-list{display:flex;flex-wrap:wrap;gap:10px}
 
-.game-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
-.game-card{border:2px solid var(--pink);border-radius:14px;overflow:hidden;cursor:pointer;transition:.25s}
-.game-card:hover{transform:scale(1.05);box-shadow:0 0 25px var(--pink)}
-.game-card img{width:100%;height:130px;object-fit:cover}
-.game-card h3{text-align:center;padding:8px;background:black;color:var(--pink)}
+/* ===== GAME GRID ===== */
 
-iframe{width:100%;height:75vh;border:none;border-radius:12px;margin-top:20px}
+.game-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:18px
+}
+
+.game-card{
+border:2px solid var(--pink);
+border-radius:14px;
+overflow:hidden;
+cursor:pointer;
+transition:.25s;
+animation:neonPulse 4s infinite;
+}
+
+.game-card:hover{
+transform:scale(1.05);
+box-shadow:0 0 40px var(--pink),0 0 70px var(--neon);
+}
+
+.game-card img{
+width:100%;
+height:130px;
+object-fit:cover
+}
+
+.game-card h3{
+text-align:center;
+padding:8px;
+background:black;
+color:var(--pink)
+}
+
+iframe{
+width:100%;
+height:75vh;
+border:none;
+border-radius:12px;
+margin-top:20px
+}
+
+/* ===== PANIC BUTTON ===== */
 
 .panicBtn{
-position:fixed;bottom:20px;right:20px;padding:12px 16px;
-border:2px solid #1a73e8;background:black;color:#1a73e8;border-radius:10px;
-cursor:pointer;z-index:9999;
+position:fixed;
+bottom:20px;
+right:20px;
+padding:12px 16px;
+border:2px solid #1a73e8;
+background:black;
+color:#1a73e8;
+border-radius:10px;
+cursor:pointer;
+z-index:9999;
 }
+
+/* ===== CLASSROOM OVERLAY ===== */
 
 #classroomOverlay{
-position:fixed;inset:0;background:#f1f3f4;display:none;
-flex-direction:column;justify-content:center;align-items:center;z-index:10000;
+position:fixed;
+inset:0;
+background:#f1f3f4;
+display:none;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:10000;
 font-family:Arial;
 }
-#classroomOverlay img{width:70px;margin-bottom:15px}
+
+#classroomOverlay img{
+width:70px;
+margin-bottom:15px
+}
 
 .loader{
-width:40px;height:40px;border:4px solid #ccc;border-top:4px solid #1a73e8;
-border-radius:50%;animation:spin 1s linear infinite;margin-bottom:20px;
+width:40px;
+height:40px;
+border:4px solid #ccc;
+border-top:4px solid #1a73e8;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:20px;
 }
+
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== GLOW ANIMATIONS ===== */
+
+@keyframes neonPulse{
+0%{box-shadow:0 0 5px var(--neon),0 0 10px var(--neon)}
+50%{box-shadow:0 0 20px var(--neon),0 0 40px var(--pink)}
+100%{box-shadow:0 0 5px var(--neon),0 0 10px var(--neon)}
+}
+
+@keyframes textGlow{
+0%{text-shadow:0 0 5px var(--pink)}
+50%{text-shadow:0 0 25px var(--pink),0 0 40px var(--neon)}
+100%{text-shadow:0 0 5px var(--pink)}
+}
 </style>
 </head>
 
 <body>
 
-<!-- LOADING -->
-<div id="loadingScreen">
-<h1>BY PANCAKES</h1>
-<p>FOLLOW TRK_OWNER1 ON ROBLOX & JOIN HIS GROUP (SoapBlox's Creates)</p>
-<div id="loadingBar"><div id="loadingProgress"></div></div>
-</div>
-
-<section class="cover" id="cover" style="display:none;">
+<section class="cover" id="cover">
 <h1>BY PANCAKES :)</h1>
 <button onclick="openSite()">ENTER</button>
 </section>
@@ -138,14 +256,14 @@ border-radius:50%;animation:spin 1s linear infinite;margin-bottom:20px;
 
 <div class="game-grid" id="gameGrid">
 
-<div class="game-card arcade" data-url="games/2048/index.html">
-<img src="https://img.itch.zone/aW1nLzQzOTY4MzUucG5n/original/W2yJ0Z.png">
+<div class="game-card arcade" onclick="loadGame('games/2048/index.html')">
+<img src="https://play-lh.googleusercontent.com/ZxY9R0z5jK0z5Ww_HpZ6-2048.png">
 <h3>2048</h3>
 </div>
 
 </div>
 
-<iframe id="gameFrame"></iframe>
+<iframe id="gameFrame" allowfullscreen></iframe>
 </section>
 
 <button class="panicBtn" onclick="showClassroom()">Google Classroom</button>
@@ -159,35 +277,31 @@ border-radius:50%;animation:spin 1s linear infinite;margin-bottom:20px;
 
 <script>
 
-/* LOADING TIMER */
-setTimeout(()=>{
-document.getElementById("loadingScreen").style.display="none";
-cover.style.display="flex";
-},8000);
+function openSite(){
+cover.style.display="none";
+navbar.style.display="block";
+showTab('games')
+}
 
-function openSite(){cover.style.display="none";navbar.style.display="block";showTab('games')}
-function goHome(){navbar.style.display="none";cover.style.display="flex";document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))}
-function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function goHome(){
+navbar.style.display="none";
+cover.style.display="flex";
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))
+}
+
+function showTab(id){
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.getElementById(id).classList.add('active')
+}
 
 function loadGame(url){
 gameFrame.src="about:blank";
-setTimeout(()=>gameFrame.src=url,50);
+setTimeout(()=>{gameFrame.src=url},50);
 }
 
-document.getElementById("gameGrid").addEventListener("click",e=>{
-const card=e.target.closest(".game-card");
-if(!card) return;
-
-const title=card.querySelector("h3").innerText;
-const url=card.dataset.url;
-
-loadGame(url);
-
-plays[title]=plays[title]||{count:0,url};
-plays[title].count++;
-localStorage.setItem("plays",JSON.stringify(plays));
-updateMostPlayed();
-});
+function fullscreen(){
+if(gameFrame.requestFullscreen) gameFrame.requestFullscreen()
+}
 
 function filterGames(){
 const t=search.value.toLowerCase(),c=category.value;
@@ -198,26 +312,10 @@ card.style.display=(okT&&okC)?"block":"none";
 });
 }
 
-function fullscreen(){if(gameFrame.requestFullscreen)gameFrame.requestFullscreen()}
+/* CLASSROOM */
 
-const plays = JSON.parse(localStorage.getItem("plays")||"{}");
-const mostList=document.getElementById("mostList");
-
-function updateMostPlayed(){
-mostList.innerHTML="";
-Object.entries(plays).sort((a,b)=>b[1].count-a[1].count).slice(0,5)
-.forEach(([title,data])=>{
-const b=document.createElement("div");
-b.className="most-item";
-b.textContent=`${title} (${data.count})`;
-b.onclick=()=>loadGame(data.url);
-mostList.appendChild(b);
-});
-}
-updateMostPlayed();
-
-function showClassroom(){classroomOverlay.style.display="flex";}
-function hideClassroom(){classroomOverlay.style.display="none";}
+function showClassroom(){classroomOverlay.style.display="flex"}
+function hideClassroom(){classroomOverlay.style.display="none"}
 
 </script>
 
