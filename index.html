@@ -10,7 +10,6 @@
 
 <style>
 :root{--bg:#050508;--neon:#00fff7;--pink:#ff00ff;--text:#e6f7ff}
-
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif}
 
 body{
@@ -20,7 +19,6 @@ overflow-x:hidden;
 }
 
 /* ===== NEON GRID BACKGROUND ===== */
-
 body::before{
 content:"";
 position:fixed;
@@ -32,14 +30,68 @@ background-size:60px 60px;
 animation:gridMove 12s linear infinite;
 z-index:-1;
 }
-
 @keyframes gridMove{
 0%{transform:translateY(0)}
 100%{transform:translateY(60px)}
 }
 
-/* ===== COVER ===== */
+/* ===== LOADING SCREEN ===== */
+#loadingScreen{
+position:fixed;
+inset:0;
+background:radial-gradient(circle at top,#0a0a18,#050508);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999999;
+flex-direction:column;
+}
 
+.loadingContent{text-align:center}
+
+.loadingContent h1{
+font-size:3.5rem;
+color:var(--pink);
+animation:textGlow 2s infinite alternate;
+margin-bottom:20px;
+}
+
+.loadBar{
+margin-top:25px;
+width:320px;
+height:14px;
+border-radius:30px;
+border:2px solid var(--neon);
+overflow:hidden;
+background:#111;
+}
+
+.loadFill{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,var(--neon),var(--pink));
+animation:loadingFill 8s linear forwards;
+}
+
+@keyframes loadingFill{
+from{width:0%}
+to{width:100%}
+}
+
+/* ===== GLOW ===== */
+@keyframes neonPulse{
+0%{box-shadow:0 0 5px var(--neon)}
+50%{box-shadow:0 0 20px var(--neon),0 0 40px var(--pink)}
+100%{box-shadow:0 0 5px var(--neon)}
+}
+
+@keyframes textGlow{
+0%{text-shadow:0 0 5px var(--pink)}
+50%{text-shadow:0 0 25px var(--pink),0 0 40px var(--neon)}
+100%{text-shadow:0 0 5px var(--pink)}
+}
+
+/* ===== COVER ===== */
 .cover{
 height:100vh;
 display:flex;
@@ -47,13 +99,11 @@ flex-direction:column;
 justify-content:center;
 align-items:center
 }
-
 .cover h1{
 font-size:4rem;
 color:var(--pink);
 animation:textGlow 2.5s infinite alternate;
 }
-
 .cover button{
 margin-top:20px;
 padding:18px 40px;
@@ -66,14 +116,12 @@ animation:neonPulse 3s infinite;
 }
 
 /* ===== NAV ===== */
-
 nav{
 display:none;
 text-align:center;
 padding:15px;
 border-bottom:1px solid rgba(0,255,247,.2)
 }
-
 nav button{
 margin:6px;
 padding:10px 20px;
@@ -86,19 +134,16 @@ animation:neonPulse 3s infinite;
 }
 
 /* ===== TABS ===== */
-
 .tab{display:none;padding:25px;max-width:1500px;margin:auto}
 .tab.active{display:block}
 
 /* ===== CONTROLS ===== */
-
 .controls{
 display:flex;
 flex-wrap:wrap;
 gap:10px;
 margin-bottom:20px
 }
-
 .controls input,.controls select,.controls button{
 padding:10px;
 border-radius:8px;
@@ -107,25 +152,12 @@ background:black;
 color:var(--pink)
 }
 
-/* ===== MOST PLAYED ===== */
-
-.most-played{
-margin-bottom:25px;
-padding:15px;
-border:2px solid var(--neon);
-border-radius:14px
-}
-
-.most-list{display:flex;flex-wrap:wrap;gap:10px}
-
-/* ===== GAME GRID ===== */
-
+/* ===== GAMES ===== */
 .game-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
 gap:18px
 }
-
 .game-card{
 border:2px solid var(--pink);
 border-radius:14px;
@@ -134,18 +166,15 @@ cursor:pointer;
 transition:.25s;
 animation:neonPulse 4s infinite;
 }
-
 .game-card:hover{
 transform:scale(1.05);
 box-shadow:0 0 40px var(--pink),0 0 70px var(--neon);
 }
-
 .game-card img{
 width:100%;
 height:130px;
 object-fit:cover
 }
-
 .game-card h3{
 text-align:center;
 padding:8px;
@@ -161,8 +190,7 @@ border-radius:12px;
 margin-top:20px
 }
 
-/* ===== PANIC BUTTON ===== */
-
+/* ===== CLASSROOM BUTTON ===== */
 .panicBtn{
 position:fixed;
 bottom:20px;
@@ -176,8 +204,6 @@ cursor:pointer;
 z-index:9999;
 }
 
-/* ===== CLASSROOM OVERLAY ===== */
-
 #classroomOverlay{
 position:fixed;
 inset:0;
@@ -190,11 +216,6 @@ z-index:10000;
 font-family:Arial;
 }
 
-#classroomOverlay img{
-width:70px;
-margin-bottom:15px
-}
-
 .loader{
 width:40px;
 height:40px;
@@ -204,26 +225,21 @@ border-radius:50%;
 animation:spin 1s linear infinite;
 margin-bottom:20px;
 }
-
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ===== GLOW ANIMATIONS ===== */
-
-@keyframes neonPulse{
-0%{box-shadow:0 0 5px var(--neon),0 0 10px var(--neon)}
-50%{box-shadow:0 0 20px var(--neon),0 0 40px var(--pink)}
-100%{box-shadow:0 0 5px var(--neon),0 0 10px var(--neon)}
-}
-
-@keyframes textGlow{
-0%{text-shadow:0 0 5px var(--pink)}
-50%{text-shadow:0 0 25px var(--pink),0 0 40px var(--neon)}
-100%{text-shadow:0 0 5px var(--pink)}
-}
 </style>
 </head>
 
 <body>
+
+<!-- LOADING -->
+<div id="loadingScreen">
+<div class="loadingContent">
+<h1>BY PANCAKES</h1>
+<p>FOLLOW TRK_OWNER1 ON ROBLOX</p>
+<p>JOIN HIS GROUP (SoapBlox's Creates)</p>
+<div class="loadBar"><div class="loadFill"></div></div>
+</div>
+</div>
 
 <section class="cover" id="cover">
 <h1>BY PANCAKES :)</h1>
@@ -236,11 +252,6 @@ margin-bottom:20px;
 </nav>
 
 <section class="tab" id="games">
-
-<div class="most-played">
-<h2>⭐ Most Played</h2>
-<div class="most-list" id="mostList"></div>
-</div>
 
 <div class="controls">
 <input id="search" placeholder="Search games..." oninput="filterGames()">
@@ -263,46 +274,33 @@ margin-bottom:20px;
 
 </div>
 
-<iframe id="gameFrame" allowfullscreen></iframe>
+<iframe id="gameFrame"></iframe>
 </section>
 
 <button class="panicBtn" onclick="showClassroom()">Google Classroom</button>
 
 <div id="classroomOverlay">
-<img src="https://ssl.gstatic.com/classroom/logo_square_rounded.svg">
+<img src="https://ssl.gstatic.com/classroom/logo_square_rounded.svg" width="70">
 <div class="loader"></div>
 <p>Loading Google Classroom…</p>
 <button onclick="hideClassroom()">Back</button>
 </div>
 
 <script>
+/* Loading Remove */
+window.addEventListener("load",()=>{
+setTimeout(()=>{
+loadingScreen.style.opacity="0";
+loadingScreen.style.transition="1s";
+setTimeout(()=>loadingScreen.remove(),1000);
+},8000);
+});
 
-function openSite(){
-cover.style.display="none";
-navbar.style.display="block";
-showTab('games')
-}
-
-function goHome(){
-navbar.style.display="none";
-cover.style.display="flex";
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))
-}
-
-function showTab(id){
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.getElementById(id).classList.add('active')
-}
-
-function loadGame(url){
-gameFrame.src="about:blank";
-setTimeout(()=>{gameFrame.src=url},50);
-}
-
-function fullscreen(){
-if(gameFrame.requestFullscreen) gameFrame.requestFullscreen()
-}
-
+function openSite(){cover.style.display="none";navbar.style.display="block";showTab('games')}
+function goHome(){navbar.style.display="none";cover.style.display="flex";document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))}
+function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function loadGame(url){gameFrame.src="about:blank";setTimeout(()=>gameFrame.src=url,50);}
+function fullscreen(){if(gameFrame.requestFullscreen)gameFrame.requestFullscreen();}
 function filterGames(){
 const t=search.value.toLowerCase(),c=category.value;
 document.querySelectorAll('.game-card').forEach(card=>{
@@ -312,11 +310,8 @@ card.style.display=(okT&&okC)?"block":"none";
 });
 }
 
-/* CLASSROOM */
-
 function showClassroom(){classroomOverlay.style.display="flex"}
 function hideClassroom(){classroomOverlay.style.display="none"}
-
 </script>
 
 </body>
