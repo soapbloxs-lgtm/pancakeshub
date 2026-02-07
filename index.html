@@ -56,12 +56,12 @@ animation:textGlow 2s infinite alternate;
 margin-bottom:20px;
 }
 
+/* ✅ FIXED BAR ALIGNMENT + REMOVED OUTLINE */
 .loadBar{
-margin-top:25px;
+margin:25px auto 0 auto;
 width:320px;
 height:14px;
 border-radius:30px;
-border:2px solid var(--neon);
 overflow:hidden;
 background:#111;
 }
@@ -287,7 +287,6 @@ margin-bottom:20px;
 </div>
 
 <script>
-/* Loading Remove */
 window.addEventListener("load",()=>{
 setTimeout(()=>{
 loadingScreen.style.opacity="0";
