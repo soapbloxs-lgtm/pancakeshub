@@ -56,7 +56,6 @@ animation:textGlow 2s infinite alternate;
 margin-bottom:20px;
 }
 
-/* ✅ FIXED BAR ALIGNMENT + REMOVED OUTLINE */
 .loadBar{
 margin:25px auto 0 auto;
 width:320px;
@@ -65,7 +64,6 @@ border-radius:30px;
 overflow:hidden;
 background:#111;
 }
-
 .loadFill{
 height:100%;
 width:0%;
@@ -73,18 +71,13 @@ background:linear-gradient(90deg,var(--neon),var(--pink));
 animation:loadingFill 8s linear forwards;
 }
 
-@keyframes loadingFill{
-from{width:0%}
-to{width:100%}
-}
+@keyframes loadingFill{from{width:0%}to{width:100%}}
 
-/* ===== GLOW ===== */
 @keyframes neonPulse{
 0%{box-shadow:0 0 5px var(--neon)}
 50%{box-shadow:0 0 20px var(--neon),0 0 40px var(--pink)}
 100%{box-shadow:0 0 5px var(--neon)}
 }
-
 @keyframes textGlow{
 0%{text-shadow:0 0 5px var(--pink)}
 50%{text-shadow:0 0 25px var(--pink),0 0 40px var(--neon)}
@@ -252,7 +245,7 @@ margin-bottom:20px;
 <button onclick="showTab('unblocker')">UnBlocker</button>
 </nav>
 
-<!-- ===== GAMES TAB (FULLY RESTORED) ===== -->
+<!-- ===== GAMES TAB (FULLY FIXED) ===== -->
 <section class="tab" id="games">
 
 <div class="controls">
@@ -308,6 +301,7 @@ margin-bottom:20px;
 <img src="https://ssl.gstatic.com/classroom/logo_square_rounded.svg" width="70">
 <div class="loader"></div>
 <p>Loading Google Classroom…</p>
+<div class="loadBar"><div class="loadFill"></div></div>
 <button onclick="hideClassroom()">Back</button>
 </div>
 
