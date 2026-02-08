@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Pancakes Proxy</title>
 
+<style>
+body{
+background:black;
+color:#00fff7;
+font-family:Arial;
+text-align:center;
+margin:0;
+}
+
+.topBar{
+padding:15px;
+border-bottom:2px solid #ff00ff;
+}
+
+input{
+width:60%;
+padding:12px;
+border-radius:8px;
+border:2px solid #00fff7;
+background:black;
+color:#00fff7;
+}
+
+button{
+padding:12px 20px;
+border-radius:8px;
+border:2px solid #ff00ff;
+background:black;
+color:#ff00ff;
+cursor:pointer;
+}
+
+iframe{
+width:100%;
+height:80vh;
+border:none;
+margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="topBar">
+
+<h2>Pancakes Web Proxy</h2>
+
+<input id="urlBox" placeholder="Enter URL or Search">
+
+<button onclick="loadSite()">Go</button>
+
+</div>
+
+<iframe id="proxyFrame"></iframe>
+
+<script>
+function loadSite(){
+let input=document.getElementById("urlBox").value.trim();
+if(!input) return;
+
+if(!input.startsWith("http")){
+input="https://duckduckgo.com/?q="+encodeURIComponent(input);
+}
+
+document.getElementById("proxyFrame").src=input;
+}
+</script>
+
+</body>
+</html>
