@@ -18,6 +18,7 @@ color:var(--text);
 overflow-x:hidden;
 }
 
+/* ===== NEON GRID BACKGROUND ===== */
 body::before{
 content:"";
 position:fixed;
@@ -34,6 +35,7 @@ z-index:-1;
 100%{transform:translateY(60px)}
 }
 
+/* ===== LOADING SCREEN ===== */
 #loadingScreen{
 position:fixed;
 inset:0;
@@ -46,6 +48,7 @@ flex-direction:column;
 }
 
 .loadingContent{text-align:center}
+
 .loadingContent h1{
 font-size:3.5rem;
 color:var(--pink);
@@ -53,6 +56,7 @@ animation:textGlow 2s infinite alternate;
 margin-bottom:20px;
 }
 
+/* ✅ FIXED BAR ALIGNMENT + REMOVED OUTLINE */
 .loadBar{
 margin:25px auto 0 auto;
 width:320px;
@@ -61,25 +65,33 @@ border-radius:30px;
 overflow:hidden;
 background:#111;
 }
+
 .loadFill{
 height:100%;
 width:0%;
 background:linear-gradient(90deg,var(--neon),var(--pink));
 animation:loadingFill 8s linear forwards;
 }
-@keyframes loadingFill{from{width:0%}to{width:100%}}
 
+@keyframes loadingFill{
+from{width:0%}
+to{width:100%}
+}
+
+/* ===== GLOW ===== */
 @keyframes neonPulse{
 0%{box-shadow:0 0 5px var(--neon)}
 50%{box-shadow:0 0 20px var(--neon),0 0 40px var(--pink)}
 100%{box-shadow:0 0 5px var(--neon)}
 }
+
 @keyframes textGlow{
 0%{text-shadow:0 0 5px var(--pink)}
 50%{text-shadow:0 0 25px var(--pink),0 0 40px var(--neon)}
 100%{text-shadow:0 0 5px var(--pink)}
 }
 
+/* ===== COVER ===== */
 .cover{
 height:100vh;
 display:flex;
@@ -103,6 +115,7 @@ cursor:pointer;
 animation:neonPulse 3s infinite;
 }
 
+/* ===== NAV ===== */
 nav{
 display:none;
 text-align:center;
@@ -120,18 +133,64 @@ cursor:pointer;
 animation:neonPulse 3s infinite;
 }
 
+/* ===== TABS ===== */
 .tab{display:none;padding:25px;max-width:1500px;margin:auto}
 .tab.active{display:block}
+
+/* ===== CONTROLS ===== */
+.controls{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:20px
+}
+.controls input,.controls select,.controls button{
+padding:10px;
+border-radius:8px;
+border:2px solid var(--pink);
+background:black;
+color:var(--pink)
+}
+
+/* ===== GAMES ===== */
+.game-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:18px
+}
+.game-card{
+border:2px solid var(--pink);
+border-radius:14px;
+overflow:hidden;
+cursor:pointer;
+transition:.25s;
+animation:neonPulse 4s infinite;
+}
+.game-card:hover{
+transform:scale(1.05);
+box-shadow:0 0 40px var(--pink),0 0 70px var(--neon);
+}
+.game-card img{
+width:100%;
+height:130px;
+object-fit:cover
+}
+.game-card h3{
+text-align:center;
+padding:8px;
+background:black;
+color:var(--pink)
+}
 
 iframe{
 width:100%;
 height:75vh;
 border:none;
 border-radius:12px;
-margin-top:20px;
-background:black;
+margin-top:20px
 }
 
+/* ===== CLASSROOM BUTTON ===== */
 .panicBtn{
 position:fixed;
 bottom:20px;
@@ -156,11 +215,23 @@ align-items:center;
 z-index:10000;
 font-family:Arial;
 }
+
+.loader{
+width:40px;
+height:40px;
+border:4px solid #ccc;
+border-top:4px solid #1a73e8;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:20px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 
 <body>
 
+<!-- LOADING -->
 <div id="loadingScreen">
 <div class="loadingContent">
 <h1>BY PANCAKES</h1>
@@ -181,13 +252,35 @@ font-family:Arial;
 <button onclick="showTab('unblocker')">UnBlocker</button>
 </nav>
 
+<!-- ===== GAMES TAB (FULLY RESTORED) ===== -->
 <section class="tab" id="games">
-<p style="opacity:.7;text-align:center;">Games stay unchanged</p>
+
+<div class="controls">
+<input id="search" placeholder="Search games..." oninput="filterGames()">
+<select id="category" onchange="filterGames()">
+<option value="all">All</option>
+<option value="arcade">Arcade</option>
+<option value="puzzle">Puzzle</option>
+<option value="skill">Skill</option>
+<option value="endless">Endless</option>
+</select>
+<button onclick="fullscreen()">Fullscreen</button>
+</div>
+
+<div class="game-grid" id="gameGrid">
+
+<div class="game-card arcade" onclick="loadGame('games/2048/index.html')">
+<img src="https://play-lh.googleusercontent.com/ZxY9R0z5jK0z5Ww_HpZ6-2048.png">
+<h3>2048</h3>
+</div>
+
+</div>
+
+<iframe id="gameFrame"></iframe>
 </section>
 
 <!-- ✅ SAFE WEB VIEWER TAB -->
 <section class="tab" id="unblocker">
-
 <h2 style="text-align:center;color:var(--pink);">(In Progress)</h2>
 
 <div style="max-width:650px;margin:20px auto;">
@@ -207,17 +300,24 @@ font-family:Arial;
 </div>
 
 <iframe id="viewerFrame"></iframe>
-
 </section>
 
 <button class="panicBtn" onclick="showClassroom()">Google Classroom</button>
 
 <div id="classroomOverlay">
-<p>Google Classroom</p>
+<img src="https://ssl.gstatic.com/classroom/logo_square_rounded.svg" width="70">
+<div class="loader"></div>
+<p>Loading Google Classroom…</p>
 <button onclick="hideClassroom()">Back</button>
 </div>
 
 <script>
+const loadingScreen=document.getElementById("loadingScreen");
+const cover=document.getElementById("cover");
+const navbar=document.getElementById("navbar");
+const classroomOverlay=document.getElementById("classroomOverlay");
+const gameFrame=document.getElementById("gameFrame");
+
 window.addEventListener("load",()=>{
 setTimeout(()=>{
 loadingScreen.style.opacity="0";
@@ -226,44 +326,36 @@ setTimeout(()=>loadingScreen.remove(),1000);
 },8000);
 });
 
-function openSite(){
-cover.style.display="none";
-navbar.style.display="block";
-showTab('games');
-}
+function openSite(){cover.style.display="none";navbar.style.display="block";showTab('games')}
+function goHome(){navbar.style.display="none";cover.style.display="flex";document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))}
+function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active')}
 
-function goHome(){
-navbar.style.display="none";
-cover.style.display="flex";
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-}
+function loadGame(url){gameFrame.src="about:blank";setTimeout(()=>gameFrame.src=url,50);}
+function fullscreen(){if(gameFrame.requestFullscreen)gameFrame.requestFullscreen();}
 
-function showTab(id){
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.getElementById(id).classList.add('active');
+function filterGames(){
+const t=document.getElementById("search").value.toLowerCase();
+const c=document.getElementById("category").value;
+document.querySelectorAll('.game-card').forEach(card=>{
+const okT=card.innerText.toLowerCase().includes(t);
+const okC=c==="all"||card.classList.contains(c);
+card.style.display=(okT&&okC)?"block":"none";
+});
 }
 
 function loadViewer(){
 const input=document.getElementById("viewerSearch").value.trim();
 const frame=document.getElementById("viewerFrame");
 const notice=document.getElementById("viewerNotice");
-
 if(!input) return;
 notice.style.display="none";
-
 let url=input;
 if(!input.startsWith("http")){
 url="https://duckduckgo.com/?q="+encodeURIComponent(input);
 }
-
 frame.src=url;
-
 setTimeout(()=>{
-try{
-frame.contentWindow.location.href;
-}catch{
-notice.style.display="block";
-}
+try{frame.contentWindow.location.href;}catch{notice.style.display="block";}
 },1500);
 }
 
