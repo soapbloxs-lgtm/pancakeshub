@@ -245,7 +245,7 @@ margin-bottom:20px;
 <button onclick="showTab('unblocker')">UnBlocker</button>
 </nav>
 
-<!-- ===== GAMES TAB (FULLY FIXED) ===== -->
+<!-- ===== GAMES TAB ===== -->
 <section class="tab" id="games">
 
 <div class="controls">
@@ -261,18 +261,16 @@ margin-bottom:20px;
 </div>
 
 <div class="game-grid" id="gameGrid">
-
 <div class="game-card arcade" onclick="loadGame('games/2048/index.html')">
 <img src="https://play-lh.googleusercontent.com/ZxY9R0z5jK0z5Ww_HpZ6-2048.png">
 <h3>2048</h3>
 </div>
-
 </div>
 
 <iframe id="gameFrame"></iframe>
 </section>
 
-<!-- ✅ SAFE WEB VIEWER TAB -->
+<!-- ===== UNBLOCKER TAB ===== -->
 <section class="tab" id="unblocker">
 <h2 style="text-align:center;color:var(--pink);">(In Progress)</h2>
 
@@ -297,12 +295,12 @@ margin-bottom:20px;
 
 <button class="panicBtn" onclick="showClassroom()">Google Classroom</button>
 
+<!-- ===== CLASSROOM OVERLAY WITHOUT LOADING BAR ===== -->
 <div id="classroomOverlay">
-<img src="https://ssl.gstatic.com/classroom/logo_square_rounded.svg" width="70">
-<div class="loader"></div>
-<p>Loading Google Classroom…</p>
-<div class="loadBar"><div class="loadFill"></div></div>
-<button onclick="hideClassroom()">Back</button>
+  <img src="https://ssl.gstatic.com/classroom/logo_square_rounded.svg" width="70">
+  <div class="loader"></div>
+  <p>Loading Google Classroom…</p>
+  <button onclick="hideClassroom()">Back</button>
 </div>
 
 <script>
@@ -312,49 +310,73 @@ const navbar=document.getElementById("navbar");
 const classroomOverlay=document.getElementById("classroomOverlay");
 const gameFrame=document.getElementById("gameFrame");
 
+// Remove loading screen after page fully loads
 window.addEventListener("load",()=>{
-setTimeout(()=>{
-loadingScreen.style.opacity="0";
-loadingScreen.style.transition="1s";
-setTimeout(()=>loadingScreen.remove(),1000);
-},8000);
+  setTimeout(()=>{
+    loadingScreen.style.opacity="0";
+    loadingScreen.style.transition="1s";
+    setTimeout(()=>loadingScreen.remove(),1000);
+  },8000);
 });
 
-function openSite(){cover.style.display="none";navbar.style.display="block";showTab('games')}
-function goHome(){navbar.style.display="none";cover.style.display="flex";document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))}
-function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function openSite(){
+  cover.style.display="none";
+  navbar.style.display="block";
+  showTab('games');
+}
 
-function loadGame(url){gameFrame.src="about:blank";setTimeout(()=>gameFrame.src=url,50);}
-function fullscreen(){if(gameFrame.requestFullscreen)gameFrame.requestFullscreen();}
+function goHome(){
+  navbar.style.display="none";
+  cover.style.display="flex";
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+}
+
+function showTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function loadGame(url){
+  gameFrame.src="about:blank";
+  setTimeout(()=>gameFrame.src=url,50);
+}
+
+function fullscreen(){
+  if(gameFrame.requestFullscreen) gameFrame.requestFullscreen();
+}
 
 function filterGames(){
-const t=document.getElementById("search").value.toLowerCase();
-const c=document.getElementById("category").value;
-document.querySelectorAll('.game-card').forEach(card=>{
-const okT=card.innerText.toLowerCase().includes(t);
-const okC=c==="all"||card.classList.contains(c);
-card.style.display=(okT&&okC)?"block":"none";
-});
+  const t=document.getElementById("search").value.toLowerCase();
+  const c=document.getElementById("category").value;
+  document.querySelectorAll('.game-card').forEach(card=>{
+    const okT=card.innerText.toLowerCase().includes(t);
+    const okC=c==="all"||card.classList.contains(c);
+    card.style.display=(okT&&okC)?"block":"none";
+  });
 }
 
 function loadViewer(){
-const input=document.getElementById("viewerSearch").value.trim();
-const frame=document.getElementById("viewerFrame");
-const notice=document.getElementById("viewerNotice");
-if(!input) return;
-notice.style.display="none";
-let url=input;
-if(!input.startsWith("http")){
-url="https://duckduckgo.com/?q="+encodeURIComponent(input);
-}
-frame.src=url;
-setTimeout(()=>{
-try{frame.contentWindow.location.href;}catch{notice.style.display="block";}
-},1500);
+  const input=document.getElementById("viewerSearch").value.trim();
+  const frame=document.getElementById("viewerFrame");
+  const notice=document.getElementById("viewerNotice");
+  if(!input) return;
+  notice.style.display="none";
+  let url=input;
+  if(!input.startsWith("http")) url="https://duckduckgo.com/?q="+encodeURIComponent(input);
+  frame.src=url;
+  setTimeout(()=>{
+    try{frame.contentWindow.location.href}catch{notice.style.display="block";}
+  },1500);
 }
 
-function showClassroom(){classroomOverlay.style.display="flex"}
-function hideClassroom(){classroomOverlay.style.display="none"}
+// Show classroom overlay without loading bar
+function showClassroom(){
+  classroomOverlay.style.display="flex";
+}
+
+function hideClassroom(){
+  classroomOverlay.style.display="none";
+}
 </script>
 
 </body>
