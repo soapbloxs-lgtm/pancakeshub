@@ -46,7 +46,6 @@ flex-direction:column;
 }
 
 .loadingContent{text-align:center}
-
 .loadingContent h1{
 font-size:3.5rem;
 color:var(--pink);
@@ -62,25 +61,19 @@ border-radius:30px;
 overflow:hidden;
 background:#111;
 }
-
 .loadFill{
 height:100%;
 width:0%;
 background:linear-gradient(90deg,var(--neon),var(--pink));
 animation:loadingFill 8s linear forwards;
 }
-
-@keyframes loadingFill{
-from{width:0%}
-to{width:100%}
-}
+@keyframes loadingFill{from{width:0%}to{width:100%}}
 
 @keyframes neonPulse{
 0%{box-shadow:0 0 5px var(--neon)}
 50%{box-shadow:0 0 20px var(--neon),0 0 40px var(--pink)}
 100%{box-shadow:0 0 5px var(--neon)}
 }
-
 @keyframes textGlow{
 0%{text-shadow:0 0 5px var(--pink)}
 50%{text-shadow:0 0 25px var(--pink),0 0 40px var(--neon)}
@@ -264,8 +257,26 @@ margin-bottom:20px;
 <iframe id="gameFrame"></iframe>
 </section>
 
-<!-- ✅ BLANK UNBLOCKER TAB -->
-<section class="tab" id="unblocker"></section>
+<!-- ✅ CUSTOM SEARCH TAB (SAFE & ALLOWED) -->
+<section class="tab" id="unblocker">
+<h2 style="text-align:center;color:var(--pink);margin-bottom:20px;">Search Hub</h2>
+
+<div style="max-width:600px;margin:auto;display:flex;gap:10px;flex-wrap:wrap;">
+<input id="webSearch"
+placeholder="Search the web..."
+style="flex:1;padding:14px;border-radius:12px;border:2px solid var(--neon);
+background:black;color:var(--neon);"
+onkeydown="if(event.key==='Enter') runWebSearch()">
+<button onclick="runWebSearch()">Search</button>
+</div>
+
+<div style="margin-top:25px;text-align:center;">
+<button onclick="quickWeb('https://duckduckgo.com/?q=')">DuckDuckGo</button>
+<button onclick="quickWeb('https://www.google.com/search?q=')">Google</button>
+<button onclick="quickWeb('https://www.youtube.com/results?search_query=')">YouTube</button>
+<button onclick="quickWeb('https://en.wikipedia.org/wiki/Special:Search?search=')">Wikipedia</button>
+</div>
+</section>
 
 <button class="panicBtn" onclick="showClassroom()">Google Classroom</button>
 
@@ -297,6 +308,17 @@ const okT=card.innerText.toLowerCase().includes(t);
 const okC=c==="all"||card.classList.contains(c);
 card.style.display=(okT&&okC)?"block":"none";
 });
+}
+
+function runWebSearch(){
+const q=document.getElementById("webSearch").value.trim();
+if(!q) return;
+window.open("https://duckduckgo.com/?q="+encodeURIComponent(q),"_blank");
+}
+function quickWeb(base){
+const q=document.getElementById("webSearch").value.trim();
+if(!q) return;
+window.open(base+encodeURIComponent(q),"_blank");
 }
 
 function showClassroom(){classroomOverlay.style.display="flex"}
