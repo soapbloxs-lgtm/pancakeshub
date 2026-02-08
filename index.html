@@ -56,7 +56,6 @@ animation:textGlow 2s infinite alternate;
 margin-bottom:20px;
 }
 
-/* ✅ FIXED BAR ALIGNMENT + REMOVED OUTLINE */
 .loadBar{
 margin:25px auto 0 auto;
 width:320px;
@@ -249,10 +248,10 @@ margin-bottom:20px;
 <nav id="navbar">
 <button onclick="goHome()">Home</button>
 <button onclick="showTab('games')">Games</button>
+<button onclick="showTab('unblocker')">UnBlocker</button>
 </nav>
 
 <section class="tab" id="games">
-
 <div class="controls">
 <input id="search" placeholder="Search games..." oninput="filterGames()">
 <select id="category" onchange="filterGames()">
@@ -266,15 +265,22 @@ margin-bottom:20px;
 </div>
 
 <div class="game-grid" id="gameGrid">
-
 <div class="game-card arcade" onclick="loadGame('games/2048/index.html')">
 <img src="https://play-lh.googleusercontent.com/ZxY9R0z5jK0z5Ww_HpZ6-2048.png">
 <h3>2048</h3>
 </div>
-
 </div>
 
 <iframe id="gameFrame"></iframe>
+</section>
+
+<!-- ✅ NEW UNBLOCKER TAB (ADDED ONLY) -->
+<section class="tab" id="unblocker">
+<h2>UnBlocker</h2>
+<p>Enter a website URL to open it in a new tab.</p>
+<input id="unblockerInput" placeholder="https://example.com">
+<br><br>
+<button onclick="openUnblocked()">Open</button>
 </section>
 
 <button class="panicBtn" onclick="showClassroom()">Google Classroom</button>
@@ -311,6 +317,14 @@ card.style.display=(okT&&okC)?"block":"none";
 
 function showClassroom(){classroomOverlay.style.display="flex"}
 function hideClassroom(){classroomOverlay.style.display="none"}
+
+/* ✅ NEW FUNCTION (ADDED ONLY) */
+function openUnblocked(){
+let url=document.getElementById("unblockerInput").value.trim();
+if(!url) return;
+if(!url.startsWith("http")) url="https://"+url;
+window.open(url,"_blank");
+}
 </script>
 
 </body>
