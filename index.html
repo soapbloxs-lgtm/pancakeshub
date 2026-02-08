@@ -123,55 +123,13 @@ animation:neonPulse 3s infinite;
 .tab{display:none;padding:25px;max-width:1500px;margin:auto}
 .tab.active{display:block}
 
-.controls{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-margin-bottom:20px
-}
-.controls input,.controls select,.controls button{
-padding:10px;
-border-radius:8px;
-border:2px solid var(--pink);
-background:black;
-color:var(--pink)
-}
-
-.game-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:18px
-}
-.game-card{
-border:2px solid var(--pink);
-border-radius:14px;
-overflow:hidden;
-cursor:pointer;
-transition:.25s;
-animation:neonPulse 4s infinite;
-}
-.game-card:hover{
-transform:scale(1.05);
-box-shadow:0 0 40px var(--pink),0 0 70px var(--neon);
-}
-.game-card img{
-width:100%;
-height:130px;
-object-fit:cover
-}
-.game-card h3{
-text-align:center;
-padding:8px;
-background:black;
-color:var(--pink)
-}
-
 iframe{
 width:100%;
 height:75vh;
 border:none;
 border-radius:12px;
-margin-top:20px
+margin-top:20px;
+background:black;
 }
 
 .panicBtn{
@@ -198,17 +156,6 @@ align-items:center;
 z-index:10000;
 font-family:Arial;
 }
-
-.loader{
-width:40px;
-height:40px;
-border:4px solid #ccc;
-border-top:4px solid #1a73e8;
-border-radius:50%;
-animation:spin 1s linear infinite;
-margin-bottom:20px;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 
@@ -235,55 +182,38 @@ margin-bottom:20px;
 </nav>
 
 <section class="tab" id="games">
-<div class="controls">
-<input id="search" placeholder="Search games..." oninput="filterGames()">
-<select id="category" onchange="filterGames()">
-<option value="all">All</option>
-<option value="arcade">Arcade</option>
-<option value="puzzle">Puzzle</option>
-<option value="skill">Skill</option>
-<option value="endless">Endless</option>
-</select>
-<button onclick="fullscreen()">Fullscreen</button>
-</div>
-
-<div class="game-grid" id="gameGrid">
-<div class="game-card arcade" onclick="loadGame('games/2048/index.html')">
-<img src="https://play-lh.googleusercontent.com/ZxY9R0z5jK0z5Ww_HpZ6-2048.png">
-<h3>2048</h3>
-</div>
-</div>
-
-<iframe id="gameFrame"></iframe>
+<p style="opacity:.7;text-align:center;">Games stay unchanged</p>
 </section>
 
-<!-- ✅ CUSTOM SEARCH TAB (SAFE & ALLOWED) -->
+<!-- ✅ SAFE WEB VIEWER TAB -->
 <section class="tab" id="unblocker">
-<h2 style="text-align:center;color:var(--pink);margin-bottom:20px;">Search Hub</h2>
 
-<div style="max-width:600px;margin:auto;display:flex;gap:10px;flex-wrap:wrap;">
-<input id="webSearch"
-placeholder="Search the web..."
-style="flex:1;padding:14px;border-radius:12px;border:2px solid var(--neon);
-background:black;color:var(--neon);"
-onkeydown="if(event.key==='Enter') runWebSearch()">
-<button onclick="runWebSearch()">Search</button>
+<h2 style="text-align:center;color:var(--pink);">(In Progress)</h2>
+
+<div style="max-width:650px;margin:20px auto;">
+  <input
+    id="viewerSearch"
+    placeholder="Search DuckDuckGo or paste a URL"
+    style="width:100%;padding:14px;border-radius:12px;
+           border:2px solid var(--neon);
+           background:black;color:var(--neon);"
+    onkeydown="if(event.key==='Enter') loadViewer()"
+  >
 </div>
 
-<div style="margin-top:25px;text-align:center;">
-<button onclick="quickWeb('https://duckduckgo.com/?q=')">DuckDuckGo</button>
-<button onclick="quickWeb('https://www.google.com/search?q=')">Google</button>
-<button onclick="quickWeb('https://www.youtube.com/results?search_query=')">YouTube</button>
-<button onclick="quickWeb('https://en.wikipedia.org/wiki/Special:Search?search=')">Wikipedia</button>
+<div id="viewerNotice"
+     style="text-align:center;color:var(--pink);display:none;">
+  This site cannot be embedded.
 </div>
+
+<iframe id="viewerFrame"></iframe>
+
 </section>
 
 <button class="panicBtn" onclick="showClassroom()">Google Classroom</button>
 
 <div id="classroomOverlay">
-<img src="https://ssl.gstatic.com/classroom/logo_square_rounded.svg" width="70">
-<div class="loader"></div>
-<p>Loading Google Classroom…</p>
+<p>Google Classroom</p>
 <button onclick="hideClassroom()">Back</button>
 </div>
 
@@ -296,29 +226,45 @@ setTimeout(()=>loadingScreen.remove(),1000);
 },8000);
 });
 
-function openSite(){cover.style.display="none";navbar.style.display="block";showTab('games')}
-function goHome(){navbar.style.display="none";cover.style.display="flex";document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))}
-function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active')}
-function loadGame(url){gameFrame.src="about:blank";setTimeout(()=>gameFrame.src=url,50);}
-function fullscreen(){if(gameFrame.requestFullscreen)gameFrame.requestFullscreen();}
-function filterGames(){
-const t=search.value.toLowerCase(),c=category.value;
-document.querySelectorAll('.game-card').forEach(card=>{
-const okT=card.innerText.toLowerCase().includes(t);
-const okC=c==="all"||card.classList.contains(c);
-card.style.display=(okT&&okC)?"block":"none";
-});
+function openSite(){
+cover.style.display="none";
+navbar.style.display="block";
+showTab('games');
 }
 
-function runWebSearch(){
-const q=document.getElementById("webSearch").value.trim();
-if(!q) return;
-window.open("https://duckduckgo.com/?q="+encodeURIComponent(q),"_blank");
+function goHome(){
+navbar.style.display="none";
+cover.style.display="flex";
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
 }
-function quickWeb(base){
-const q=document.getElementById("webSearch").value.trim();
-if(!q) return;
-window.open(base+encodeURIComponent(q),"_blank");
+
+function showTab(id){
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+}
+
+function loadViewer(){
+const input=document.getElementById("viewerSearch").value.trim();
+const frame=document.getElementById("viewerFrame");
+const notice=document.getElementById("viewerNotice");
+
+if(!input) return;
+notice.style.display="none";
+
+let url=input;
+if(!input.startsWith("http")){
+url="https://duckduckgo.com/?q="+encodeURIComponent(input);
+}
+
+frame.src=url;
+
+setTimeout(()=>{
+try{
+frame.contentWindow.location.href;
+}catch{
+notice.style.display="block";
+}
+},1500);
 }
 
 function showClassroom(){classroomOverlay.style.display="flex"}
