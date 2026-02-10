@@ -11,55 +11,217 @@
 <style>
 :root{--bg:#050508;--neon:#00fff7;--pink:#ff00ff;--text:#e6f7ff}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif}
-body{background:radial-gradient(circle at top,#0a0a18,var(--bg));color:var(--text);overflow-x:hidden}
 
-/* ===== NEON GRID ===== */
-body::before{content:"";position:fixed;inset:0;background:linear-gradient(rgba(0,255,247,0.08) 1px, transparent 1px),linear-gradient(90deg, rgba(255,0,255,0.08) 1px, transparent 1px);background-size:60px 60px;animation:gridMove 12s linear infinite;z-index:-1}
-@keyframes gridMove{0%{transform:translateY(0)}100%{transform:translateY(60px)}}
+body{
+background:radial-gradient(circle at top,#0a0a18,var(--bg));
+color:var(--text);
+overflow-x:hidden;
+}
 
-/* ===== LOADING ===== */
-#loadingScreen{position:fixed;inset:0;background:radial-gradient(circle at top,#0a0a18,#050508);display:flex;justify-content:center;align-items:center;z-index:999999;flex-direction:column}
+/* ===== NEON GRID BACKGROUND ===== */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:
+linear-gradient(rgba(0,255,247,0.08) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,0,255,0.08) 1px, transparent 1px);
+background-size:60px 60px;
+animation:gridMove 12s linear infinite;
+z-index:-1;
+}
+@keyframes gridMove{
+0%{transform:translateY(0)}
+100%{transform:translateY(60px)}
+}
+
+/* ===== LOADING SCREEN ===== */
+#loadingScreen{
+position:fixed;
+inset:0;
+background:radial-gradient(circle at top,#0a0a18,#050508);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999999;
+flex-direction:column;
+}
+
 .loadingContent{text-align:center}
-.loadingContent h1{font-size:3.5rem;color:var(--pink);animation:textGlow 2s infinite alternate;margin-bottom:20px}
-.loadBar{margin:25px auto 0 auto;width:320px;height:14px;border-radius:30px;overflow:hidden;background:#111}
-.loadFill{height:100%;width:0%;background:linear-gradient(90deg,var(--neon),var(--pink));animation:loadingFill 8s linear forwards}
-@keyframes loadingFill{from{width:0%}to{width:100%}}
-@keyframes neonPulse{0%{box-shadow:0 0 5px var(--neon)}50%{box-shadow:0 0 20px var(--neon),0 0 40px var(--pink)}100%{box-shadow:0 0 5px var(--neon)}}
-@keyframes textGlow{0%{text-shadow:0 0 5px var(--pink)}50%{text-shadow:0 0 25px var(--pink),0 0 40px var(--neon)}100%{text-shadow:0 0 5px var(--pink)}}
+
+.loadingContent h1{
+font-size:3.5rem;
+color:var(--pink);
+animation:textGlow 2s infinite alternate;
+margin-bottom:20px;
+}
+
+.loadBar{
+margin:25px auto 0 auto;
+width:320px;
+height:14px;
+border-radius:30px;
+overflow:hidden;
+background:#111;
+}
+.loadFill{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,var(--neon),var(--pink));
+animation:loadingFill 8s linear forwards;
+}
+
+@keyframes loadingFill{
+from{width:0%}to{width:100%}
+}
+
+@keyframes neonPulse{
+0%{box-shadow:0 0 5px var(--neon)}
+50%{box-shadow:0 0 20px var(--neon),0 0 40px var(--pink)}
+100%{box-shadow:0 0 5px var(--neon)}
+}
+
+@keyframes textGlow{
+0%{text-shadow:0 0 5px var(--pink)}
+50%{text-shadow:0 0 25px var(--pink),0 0 40px var(--neon)}
+100%{text-shadow:0 0 5px var(--pink)}
+}
 
 /* ===== COVER ===== */
-.cover{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center}
-.cover h1{font-size:4rem;color:var(--pink);animation:textGlow 2.5s infinite alternate}
-.cover button{margin-top:20px;padding:18px 40px;border:3px solid var(--neon);background:transparent;color:var(--neon);border-radius:12px;cursor:pointer;animation:neonPulse 3s infinite}
+.cover{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center
+}
+.cover h1{
+font-size:4rem;
+color:var(--pink);
+animation:textGlow 2.5s infinite alternate;
+}
+.cover button{
+margin-top:20px;
+padding:18px 40px;
+border:3px solid var(--neon);
+background:transparent;
+color:var(--neon);
+border-radius:12px;
+cursor:pointer;
+animation:neonPulse 3s infinite;
+}
 
 /* ===== NAV ===== */
-nav{display:none;text-align:center;padding:15px;border-bottom:1px solid rgba(0,255,247,.2)}
-nav button{margin:6px;padding:10px 20px;border:2px solid var(--neon);background:transparent;color:var(--neon);border-radius:8px;cursor:pointer;animation:neonPulse 3s infinite}
+nav{
+display:none;
+text-align:center;
+padding:15px;
+border-bottom:1px solid rgba(0,255,247,.2)
+}
+nav button{
+margin:6px;
+padding:10px 20px;
+border:2px solid var(--neon);
+background:transparent;
+color:var(--neon);
+border-radius:8px;
+cursor:pointer;
+animation:neonPulse 3s infinite;
+}
 
 /* ===== TABS ===== */
 .tab{display:none;padding:25px;max-width:1500px;margin:auto}
 .tab.active{display:block}
 
 /* ===== CONTROLS ===== */
-.controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
-.controls input,.controls select,.controls button{padding:10px;border-radius:8px;border:2px solid var(--pink);background:black;color:var(--pink)}
+.controls{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:20px
+}
+.controls input,.controls select,.controls button{
+padding:10px;
+border-radius:8px;
+border:2px solid var(--pink);
+background:black;
+color:var(--pink)
+}
 
 /* ===== GAMES ===== */
-.game-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
-.game-card{border:2px solid var(--pink);border-radius:14px;overflow:hidden;cursor:pointer;transition:.25s;animation:neonPulse 4s infinite}
-.game-card:hover{transform:scale(1.05);box-shadow:0 0 40px var(--pink),0 0 70px var(--neon)}
-.game-card img{width:100%;height:130px;object-fit:cover}
-.game-card h3{text-align:center;padding:8px;background:black;color:var(--pink)}
-iframe{width:100%;height:75vh;border:none;border-radius:12px;margin-top:20px}
+.game-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:18px
+}
+.game-card{
+border:2px solid var(--pink);
+border-radius:14px;
+overflow:hidden;
+cursor:pointer;
+transition:.25s;
+animation:neonPulse 4s infinite;
+}
+.game-card:hover{
+transform:scale(1.05);
+box-shadow:0 0 40px var(--pink),0 0 70px var(--neon);
+}
+.game-card img{
+width:100%;
+height:130px;
+object-fit:cover
+}
+.game-card h3{
+text-align:center;
+padding:8px;
+background:black;
+color:var(--pink)
+}
+
+iframe{
+width:100%;
+height:75vh;
+border:none;
+border-radius:12px;
+margin-top:20px
+}
 
 /* ===== CLASSROOM BUTTON ===== */
-.panicBtn{position:fixed;bottom:20px;right:20px;padding:12px 16px;border:2px solid #1a73e8;background:black;color:#1a73e8;border-radius:10px;cursor:pointer;z-index:9999}
-#classroomOverlay{position:fixed;inset:0;background:#f1f3f4;display:none;flex-direction:column;justify-content:center;align-items:center;z-index:10000;font-family:Arial}
-.loader{width:40px;height:40px;border:4px solid #ccc;border-top:4px solid #1a73e8;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:20px}
-@keyframes spin{to{transform:rotate(360deg)}}
+.panicBtn{
+position:fixed;
+bottom:20px;
+right:20px;
+padding:12px 16px;
+border:2px solid #1a73e8;
+background:black;
+color:#1a73e8;
+border-radius:10px;
+cursor:pointer;
+z-index:9999;
+}
 
-/* ===== UNBLOCKER TAB ===== */
-#unblocker iframe{width:100%;height:75vh;border:none;border-radius:12px;margin-top:20px}
+#classroomOverlay{
+position:fixed;
+inset:0;
+background:#f1f3f4;
+display:none;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:10000;
+font-family:Arial;
+}
+
+.loader{
+width:40px;
+height:40px;
+border:4px solid #ccc;
+border-top:4px solid #1a73e8;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:20px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
@@ -74,21 +236,19 @@ iframe{width:100%;height:75vh;border:none;border-radius:12px;margin-top:20px}
 </div>
 </div>
 
-<!-- COVER -->
 <section class="cover" id="cover">
 <h1>BY PANCAKES :)</h1>
 <button onclick="openSite()">ENTER</button>
 </section>
 
-<!-- NAV -->
 <nav id="navbar">
 <button onclick="goHome()">Home</button>
 <button onclick="showTab('games')">Games</button>
 <button onclick="showTab('unblocker')">UnBlocker</button>
 </nav>
 
-<!-- GAMES TAB -->
 <section class="tab" id="games">
+
 <div class="controls">
 <input id="search" placeholder="Search games..." oninput="filterGames()">
 <select id="category" onchange="filterGames()">
@@ -100,17 +260,30 @@ iframe{width:100%;height:75vh;border:none;border-radius:12px;margin-top:20px}
 </select>
 <button onclick="fullscreen()">Fullscreen</button>
 </div>
-<div class="game-grid" id="gameGrid"></div>
+
+<div class="game-grid" id="gameGrid">
+<!-- Game cards inserted dynamically -->
+</div>
+
 <iframe id="gameFrame"></iframe>
 </section>
 
-<!-- UNBLOCKER TAB -->
 <section class="tab" id="unblocker">
-<iframe src="proxy/index.html"></iframe>
+<h2 style="text-align:center;color:var(--pink);">(In Progress)</h2>
+<div style="max-width:650px;margin:20px auto;">
+  <input id="viewerSearch" placeholder="Search DuckDuckGo or paste a URL"
+    style="width:100%;padding:14px;border-radius:12px;border:2px solid var(--neon);
+           background:black;color:var(--neon);"
+    onkeydown="if(event.key==='Enter') loadViewer()">
+</div>
+<div id="viewerNotice" style="text-align:center;color:var(--pink);display:none;">
+  This site cannot be embedded.
+</div>
+<iframe id="viewerFrame"></iframe>
 </section>
 
-<!-- GOOGLE CLASSROOM -->
 <button class="panicBtn" onclick="showClassroom()">Google Classroom</button>
+
 <div id="classroomOverlay">
 <img src="https://ssl.gstatic.com/classroom/logo_square_rounded.svg" width="70">
 <div class="loader"></div>
@@ -119,75 +292,97 @@ iframe{width:100%;height:75vh;border:none;border-radius:12px;margin-top:20px}
 </div>
 
 <script>
-// DOM Elements
 const loadingScreen = document.getElementById("loadingScreen");
 const cover = document.getElementById("cover");
 const navbar = document.getElementById("navbar");
+const classroomOverlay = document.getElementById("classroomOverlay");
 const gameFrame = document.getElementById("gameFrame");
 const gameGrid = document.getElementById("gameGrid");
 
-// Game List
-const gameList = [
-"2048","1024_Moves","16_Puzzle","2048_win","2D_Breakout","2D_Fighting_game","3D_Car_Racing_Game",
-"3d_Box_Game","3d_Snake","8_Puzzle","AI_CHESS_Game","Achluophobia","Adventure_Game","Aero_Acrobat",
-"Aim_Training","AirBalloon","Airhocky_game","Alien_Invasion","Alien_Language_Translator","Alien_Shooters",
-"Align_4_Game","Alphabet","Alphabet-and-Vowels","Alphabet_Learning_Game","Am_I_the_number","Among_Us_Game",
-"Anagram -Word-Game","Anagram_Checker_Game","Angry_Bird","Angry_Boars","Animal_Match_Game","Animal_Name_Guessing",
-"Anime_Clicker","Ant_Smasher","AquaSort_Game","Arcade_Game","Archery","Arkanoid_Game","ArmorAlley","Asteroids_3D",
-"Astronaunt_runner","Atari_breakout","Atlas_Game","Audio_Wordle","Avax_Gods","Back_To_Space","Bad_Depot",
-"Bad_Luck_Brian","Ball-And-Paddle-Game","Ball_Fall_Game","Ball_Shooting_Game","Ball_and_glass","Ball_in_Maze",
-"Ballarena","Balloon_Buster","Balloon_Defense_Game","Balloon_Popup","Baseball","Baseketball","Bash_mole",
-"Battleship","Bear_Hunter_Ninja","Beat_a_mole","Belt_Black","Beyblade","Beyonder","Bingo_Game","Bird_game",
-"Bit_Maze_Platformer_Maze","Black_Jack","Black_jackk","Blanks_Detective","Blast Zone","Blink_Beat","Block Game",
-"Block.io","Block_Building","Block_Buster","Block_Dodger","Block_Ninja","Block_Vault","Bomb Throw Game","Boom_Blast",
-"Bottle_Flip","Bounce_Ball","Bouncing_Ball_Game","Bow_And_Arrow","Bow_Arrow","Box_In_Air_Game","Box_Merge",
-"Brain_Burst_Game","Brain_Color_Mastermind","Brain_Game","Brain_card_game","Breakout","Brick Buster","Brick_Breaker",
-"Brick_and_Ball","Bubble_Blast_Game","automated_rock_paper_scissor"
-];
-
-// Generate game cards
-gameList.forEach(name=>{
-  const safeName = encodeURIComponent(name);
-  const card = document.createElement("div");
-  card.className = "game-card";
-  card.innerHTML = `<img src="games/${safeName}/thumbnail.png" onerror="this.src='https://via.placeholder.com/200x130?text=No+Image'">
-<h3>${name}</h3>`;
-  card.onclick = ()=>{gameFrame.src=`games/${safeName}/index.html`};
-  gameGrid.appendChild(card);
-});
-
-// Remove loading when ready
+// ==== Loading screen fade-out
 window.addEventListener("load", ()=>{
-  // Wait until cards are generated
-  setTimeout(()=>{
+  const fill = document.querySelector(".loadFill");
+  fill.addEventListener("animationend", ()=>{
+    loadingScreen.style.transition="opacity 1s";
     loadingScreen.style.opacity="0";
-    loadingScreen.style.transition="1s";
-    setTimeout(()=>loadingScreen.remove(),500);
-  },200); // very short delay to ensure DOM is ready
+    setTimeout(()=>loadingScreen.remove(),1000);
+  });
 });
 
-// Tabs
+// ==== Site navigation
 function openSite(){cover.style.display="none";navbar.style.display="block";showTab('games')}
 function goHome(){navbar.style.display="none";cover.style.display="flex";document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))}
 function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active')}
 
-// Filter
+// ==== Games list (folder names must match exactly or be sanitized)
+const games = [
+  {name:"2048", category:"arcade", thumbnail:"games/2048/thumbnail.png"},
+  {name:"1024_Moves", category:"arcade", thumbnail:"games/1024_Moves/thumbnail.png"},
+  {name:"16_Puzzle", category:"puzzle", thumbnail:"games/16_Puzzle/thumbnail.png"},
+  {name:"2048_win", category:"arcade", thumbnail:"games/2048_win/thumbnail.png"},
+  {name:"2D_Breakout", category:"skill", thumbnail:"games/2D_Breakout/thumbnail.png"},
+  {name:"2D_Fighting_game", category:"skill", thumbnail:"games/2D_Fighting_game/thumbnail.png"},
+  {name:"3D_Car_Racing_Game", category:"arcade", thumbnail:"games/3D_Car_Racing_Game/thumbnail.png"},
+  {name:"3d_Box_Game", category:"arcade", thumbnail:"games/3d_Box_Game/thumbnail.png"},
+  {name:"3d_Snake", category:"arcade", thumbnail:"games/3d_Snake/thumbnail.png"},
+  {name:"8_Puzzle", category:"puzzle", thumbnail:"games/8_Puzzle/thumbnail.png"},
+  {name:"AI_CHESS_Game", category:"skill", thumbnail:"games/AI_CHESS_Game/thumbnail.png"},
+  {name:"Achluophobia", category:"arcade", thumbnail:"games/Achluophobia/thumbnail.png"},
+  {name:"Adventure_Game", category:"arcade", thumbnail:"games/Adventure_Game/thumbnail.png"},
+  {name:"Bubble_Blast_Game", category:"arcade", thumbnail:"games/Bubble_Blast_Game/thumbnail.png"}
+  // Add rest of your games here with same format
+];
+
+// ==== Generate game cards dynamically
+games.forEach(g=>{
+  const card = document.createElement("div");
+  card.className = `game-card ${g.category}`;
+  const img = document.createElement("img");
+  img.src = g.thumbnail;
+  img.onerror = ()=>{img.src="games/placeholder.png"};
+  const h3 = document.createElement("h3");
+  h3.innerText = g.name;
+  card.appendChild(img);
+  card.appendChild(h3);
+  card.onclick = ()=>{gameFrame.src=`games/${g.name.replace(/ /g,"_")}/index.html`; showTab('games');};
+  gameGrid.appendChild(card);
+});
+
+// ==== Filter
 function filterGames(){
-  const t=document.getElementById("search").value.toLowerCase();
-  const c=document.getElementById("category").value;
+  const t = search.value.toLowerCase();
+  const c = category.value;
   document.querySelectorAll('.game-card').forEach(card=>{
-    const okT=card.innerText.toLowerCase().includes(t);
-    const okC=c==="all"||card.classList.contains(c);
-    card.style.display=(okT&&okC)?"block":"none";
+    const okT = card.innerText.toLowerCase().includes(t);
+    const okC = c==="all" || card.classList.contains(c);
+    card.style.display = (okT && okC)?"block":"none";
   });
 }
 
-// Fullscreen
-function fullscreen(){if(gameFrame.requestFullscreen)gameFrame.requestFullscreen()}
+// ==== Fullscreen
+function fullscreen(){if(gameFrame.requestFullscreen)gameFrame.requestFullscreen();}
 
-// Classroom
-function showClassroom(){document.getElementById("classroomOverlay").style.display="flex"}
-function hideClassroom(){document.getElementById("classroomOverlay").style.display="none"}
+// ==== UnBlocker
+function loadViewer(){
+  const input=document.getElementById("viewerSearch").value.trim();
+  const frame=document.getElementById("viewerFrame");
+  const notice=document.getElementById("viewerNotice");
+  if(!input) return;
+  notice.style.display="none";
+  let url=input;
+  if(!input.startsWith("http")){
+    url="https://duckduckgo.com/?q="+encodeURIComponent(input);
+  }
+  frame.src=url;
+  setTimeout(()=>{
+    try{frame.contentWindow.location.href;}catch{notice.style.display="block";}
+  },1500);
+}
+
+// ==== Google Classroom overlay
+function showClassroom(){classroomOverlay.style.display="flex";}
+function hideClassroom(){classroomOverlay.style.display="none";}
 </script>
+
 </body>
 </html>
