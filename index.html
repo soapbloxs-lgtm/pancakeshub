@@ -56,6 +56,7 @@ animation:textGlow 2s infinite alternate;
 margin-bottom:20px;
 }
 
+/* ✅ FIXED BAR ALIGNMENT + REMOVED OUTLINE */
 .loadBar{
 margin:25px auto 0 auto;
 width:320px;
@@ -77,6 +78,7 @@ from{width:0%}
 to{width:100%}
 }
 
+/* ===== GLOW ===== */
 @keyframes neonPulse{
 0%{box-shadow:0 0 5px var(--neon)}
 50%{box-shadow:0 0 20px var(--neon),0 0 40px var(--pink)}
@@ -251,7 +253,6 @@ margin-bottom:20px;
 </nav>
 
 <section class="tab" id="games">
-
 <div class="controls">
 <input id="search" placeholder="Search games..." oninput="filterGames()">
 <select id="category" onchange="filterGames()">
@@ -265,48 +266,37 @@ margin-bottom:20px;
 </div>
 
 <div class="game-grid" id="gameGrid">
-<!-- Example game cards -->
+<!-- Example Game Cards -->
 <div class="game-card arcade" onclick="loadGame('games/2048/index.html')">
 <img src="games/2048/thumbnail.png">
 <h3>2048</h3>
 </div>
 
-<div class="game-card skill" onclick="loadGame('games/2D_Breakout/index.html')">
+<div class="game-card arcade" onclick="loadGame('games/2D_Breakout/index.html')">
 <img src="games/2D_Breakout/thumbnail.png">
 <h3>2D Breakout</h3>
 </div>
 
-<div class="game-card arcade" onclick="loadGame('games/1024_Moves/index.html')">
-<img src="games/1024_Moves/thumbnail.png">
-<h3>1024 Moves</h3>
-</div>
-
-<!-- Add all other games similarly -->
+<!-- Add more game cards here, follow same structure -->
 </div>
 
 <iframe id="gameFrame"></iframe>
 </section>
 
-<!-- UnBlocker / Proxy Tab -->
+<!-- ===== SAFE WEBVIEW / UNBLOCKER ===== -->
 <section class="tab" id="unblocker">
-<h2 style="text-align:center;color:var(--pink);">Web Proxy / Safe Viewer</h2>
-
+<h2 style="text-align:center;color:var(--pink);">(In Progress)</h2>
 <div style="max-width:650px;margin:20px auto;">
   <input
     id="viewerSearch"
     placeholder="Search DuckDuckGo or paste a URL"
-    style="width:100%;padding:14px;border-radius:12px;
-           border:2px solid var(--neon);
-           background:black;color:var(--neon);"
+    style="width:100%;padding:14px;border-radius:12px;border:2px solid var(--neon);background:black;color:var(--neon);"
     onkeydown="if(event.key==='Enter') loadViewer()"
   >
 </div>
-
-<div id="viewerNotice"
-     style="text-align:center;color:var(--pink);display:none;">
+<div id="viewerNotice" style="text-align:center;color:var(--pink);display:none;">
   This site cannot be embedded.
 </div>
-
 <iframe id="viewerFrame"></iframe>
 </section>
 
@@ -320,52 +310,88 @@ margin-bottom:20px;
 </div>
 
 <script>
-const loadingScreen=document.getElementById("loadingScreen");
-const cover=document.getElementById("cover");
-const navbar=document.getElementById("navbar");
-const classroomOverlay=document.getElementById("classroomOverlay");
-const gameFrame=document.getElementById("gameFrame");
-
-// ✅ FIXED LOADING BAR ISSUE
+// ===== LOADING SCREEN FIX =====
+const loadingScreen = document.getElementById("loadingScreen");
 const loadFill = document.querySelector(".loadFill");
-loadFill.addEventListener("animationend", () => {
-    loadingScreen.style.transition = "opacity 1s";
-    loadingScreen.style.opacity = "0";
-    setTimeout(()=>loadingScreen.remove(),1000);
+
+function hideLoadingScreen() {
+  loadingScreen.style.opacity = "0";
+  loadingScreen.style.transition = "1s";
+  setTimeout(() => loadingScreen.remove(), 1000);
+}
+
+// Trigger hide when animation ends
+loadFill.addEventListener("animationend", hideLoadingScreen);
+
+// Fallback in case animation doesn't fire
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    if (document.body.contains(loadingScreen)) hideLoadingScreen();
+  }, 8000);
 });
 
-function openSite(){cover.style.display="none";navbar.style.display="block";showTab('games')}
-function goHome(){navbar.style.display="none";cover.style.display="flex";document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))}
-function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active')}
+// ===== NAV / TABS =====
+const cover = document.getElementById("cover");
+const navbar = document.getElementById("navbar");
+const classroomOverlay = document.getElementById("classroomOverlay");
+const gameFrame = document.getElementById("gameFrame");
 
-function loadGame(url){gameFrame.src="about:blank";setTimeout(()=>gameFrame.src=url,50);}
-function fullscreen(){if(gameFrame.requestFullscreen)gameFrame.requestFullscreen();}
+function openSite(){
+  cover.style.display="none";
+  navbar.style.display="block";
+  showTab('games');
+}
+
+function goHome(){
+  navbar.style.display="none";
+  cover.style.display="flex";
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+}
+
+function showTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ===== GAMES =====
+function loadGame(url){
+  gameFrame.src="about:blank";
+  setTimeout(()=>gameFrame.src=url,50);
+}
+
+function fullscreen(){
+  if(gameFrame.requestFullscreen) gameFrame.requestFullscreen();
+}
+
 function filterGames(){
-const t=document.getElementById("search").value.toLowerCase();
-const c=document.getElementById("category").value;
-document.querySelectorAll('.game-card').forEach(card=>{
-const okT=card.innerText.toLowerCase().includes(t);
-const okC=c==="all"||card.classList.contains(c);
-card.style.display=(okT&&okC)?"block":"none";
-});
+  const t = document.getElementById("search").value.toLowerCase();
+  const c = document.getElementById("category").value;
+  document.querySelectorAll('.game-card').forEach(card=>{
+    const okT = card.innerText.toLowerCase().includes(t);
+    const okC = c==="all"||card.classList.contains(c);
+    card.style.display = (okT&&okC)?"block":"none";
+  });
 }
 
+// ===== UNBLOCKER =====
 function loadViewer(){
-const input=document.getElementById("viewerSearch").value.trim();
-const frame=document.getElementById("viewerFrame");
-const notice=document.getElementById("viewerNotice");
-if(!input) return;
-notice.style.display="none";
-let url=input;
-if(!input.startsWith("http")){
-url="https://duckduckgo.com/?q="+encodeURIComponent(input);
-}
-frame.src=url;
-setTimeout(()=>{
-try{frame.contentWindow.location.href;}catch{notice.style.display="block";}
-},1500);
+  const input = document.getElementById("viewerSearch").value.trim();
+  const frame = document.getElementById("viewerFrame");
+  const notice = document.getElementById("viewerNotice");
+  if(!input) return;
+  notice.style.display="none";
+  let url=input;
+  if(!input.startsWith("http")){
+    url="https://duckduckgo.com/?q="+encodeURIComponent(input);
+  }
+  frame.src=url;
+  setTimeout(()=>{
+    try{frame.contentWindow.location.href;}
+    catch{notice.style.display="block";}
+  },1500);
 }
 
+// ===== CLASSROOM =====
 function showClassroom(){classroomOverlay.style.display="flex"}
 function hideClassroom(){classroomOverlay.style.display="none"}
 </script>
