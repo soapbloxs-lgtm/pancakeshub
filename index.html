@@ -56,7 +56,6 @@ animation:textGlow 2s infinite alternate;
 margin-bottom:20px;
 }
 
-/* ✅ FIXED BAR ALIGNMENT */
 .loadBar{
 margin:25px auto 0 auto;
 width:320px;
@@ -73,12 +72,8 @@ background:linear-gradient(90deg,var(--neon),var(--pink));
 animation:loadingFill 8s linear forwards;
 }
 
-@keyframes loadingFill{
-from{width:0%}
-to{width:100%}
-}
+@keyframes loadingFill{from{width:0%}to{width:100%}}
 
-/* ===== GLOW ===== */
 @keyframes neonPulse{
 0%{box-shadow:0 0 5px var(--neon)}
 50%{box-shadow:0 0 20px var(--neon),0 0 40px var(--pink)}
@@ -265,7 +260,9 @@ margin-bottom:20px;
 <button onclick="fullscreen()">Fullscreen</button>
 </div>
 
-<div class="game-grid" id="gameGrid"></div>
+<div class="game-grid" id="gameGrid">
+<!-- 🎮 Game Cards Generated Automatically -->
+</div>
 
 <iframe id="gameFrame"></iframe>
 </section>
@@ -280,94 +277,146 @@ margin-bottom:20px;
 </div>
 
 <script>
-// ===== LOADING SCREEN =====
-const loadingScreen = document.getElementById("loadingScreen");
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    loadingScreen.style.opacity = "0";
-    loadingScreen.style.transition = "1s";
-    setTimeout(() => loadingScreen.remove(), 1000);
-  }, 8000);
+// Loading Screen
+window.addEventListener("load",()=>{
+  const loadingScreen=document.getElementById("loadingScreen");
+  setTimeout(()=>{
+    loadingScreen.style.opacity="0";
+    loadingScreen.style.transition="1s";
+    setTimeout(()=>loadingScreen.remove(),1000);
+  },8000);
 });
 
-// ===== HOME & NAV =====
-const cover = document.getElementById("cover");
-const navbar = document.getElementById("navbar");
-const gameFrame = document.getElementById("gameFrame");
+// Page & Tabs
+function openSite(){cover.style.display="none";navbar.style.display="block";showTab('games')}
+function goHome(){navbar.style.display="none";cover.style.display="flex";document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))}
+function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active')}
 
-function openSite() {
-  cover.style.display = "none";
-  navbar.style.display = "block";
-  showTab('games');
-}
-function goHome() {
-  navbar.style.display = "none";
-  cover.style.display = "flex";
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-}
-function showTab(id) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
+// Game Loading
+const gameFrame=document.getElementById("gameFrame");
 
-// ===== GAMES =====
+// 🔹 Add your exact folder names from GitHub here (case-sensitive)
 const gameList = [
-  "2048","1024_Moves","16_Puzzle","2048_win","2D_Breakout","2D_Fighting_game",
-  "3D_Car_Racing_Game","3d_Box_Game","3d_Snake","8_Puzzle","AI_CHESS_Game",
-  "Achluophobia","Adventure_Game","Aero_Acrobat","Aim_Training","AirBalloon",
-  "Airhocky_game","Alien_Invasion","Alien_Language_Translator","Alien_Shooters",
-  "Align_4_Game","Alphabet","Alphabet-and-Vowels","Alphabet_Learning_Game",
-  "Am_I_the_number","Among_Us_Game","Anagram -Word-Game","Anagram_Checker_Game",
-  "Angry_Bird","Angry_Boars","Animal_Match_Game","Animal_Name_Guessing",
-  "Anime_Clicker","Ant_Smasher","AquaSort_Game","Arcade_Game","Archery",
-  "Arkanoid_Game","ArmorAlley","Asteroids_3D","Astronaunt_runner","Atari_breakout",
-  "Atlas_Game","Audio_Wordle","Avax_Gods","Back_To_Space","Bad_Depot",
-  "Bad_Luck_Brian","Ball-And-Paddle-Game","Ball_Fall_Game","Ball_Shooting_Game",
-  "Ball_and_glass","Ball_in_Maze","Ballarena","Balloon_Buster","Balloon_Defense_Game",
-  "Balloon_Popup","Baseball","Baseketball","Bash_mole","Battleship",
-  "Bear_Hunter_Ninja","Beat_a_mole","Belt_Black","Beyblade","Beyonder",
-  "Bingo_Game","Bird_game","Bit_Maze_Platformer_Maze","Black_Jack","Black_jackk",
-  "Blanks_Detective","Blast Zone","Blink_Beat","Block Game","Block.io",
-  "Block_Building","Block_Buster","Block_Dodger","Block_Ninja","Block_Vault",
-  "Bomb Throw Game","Boom_Blast","Bottle_Flip","Bounce_Ball","Bouncing_Ball_Game",
-  "Bow_And_Arrow","Bow_Arrow","Box_In_Air_Game","Box_Merge","Brain_Burst_Game",
-  "Brain_Color_Mastermind","Brain_Game","Brain_card_game","Breakout","Brick Buster",
-  "Brick_Breaker","Brick_and_Ball","Bubble_Blast_Game","automated_rock_paper_scissor"
+"2048",
+"1024_Moves",
+"16_Puzzle",
+"2048_win",
+"2D_Breakout",
+"2D_Fighting_game",
+"3D_Car_Racing_Game",
+"3d_Box_Game",
+"3d_Snake",
+"8_Puzzle",
+"AI_CHESS_Game",
+"Achluophobia",
+"Adventure_Game",
+"Aero_Acrobat",
+"Aim_Training",
+"AirBalloon",
+"Airhocky_game",
+"Alien_Invasion",
+"Alien_Language_Translator",
+"Alien_Shooters",
+"Align_4_Game",
+"Alphabet",
+"Alphabet-and-Vowels",
+"Alphabet_Learning_Game",
+"Am_I_the_number",
+"Among_Us_Game",
+"Anagram -Word-Game",
+"Anagram_Checker_Game",
+"Angry_Bird",
+"Angry_Boars",
+"Animal_Match_Game",
+"Animal_Name_Guessing",
+"Anime_Clicker",
+"Ant_Smasher",
+"AquaSort_Game",
+"Arcade_Game",
+"Archery",
+"Arkanoid_Game",
+"ArmorAlley",
+"Asteroids_3D",
+"Astronaunt_runner",
+"Atari_breakout",
+"Atlas_Game",
+"Audio_Wordle",
+"Avax_Gods",
+"Back_To_Space",
+"Bad_Depot",
+"Bad_Luck_Brian",
+"Ball-And-Paddle-Game",
+"Ball_Fall_Game",
+"Ball_Shooting_Game",
+"Ball_and_glass",
+"Ball_in_Maze",
+"Ballarena",
+"Balloon_Buster",
+"Balloon_Defense_Game",
+"Balloon_Popup",
+"Baseball",
+"Baseketball",
+"Bash_mole",
+"Battleship",
+"Bear_Hunter_Ninja",
+"Beat_a_mole",
+"Belt_Black",
+"Beyblade",
+"Beyonder",
+"Bingo_Game",
+"Bird_game",
+"Bit_Maze_Platformer_Maze",
+"Black_Jack",
+"Black_jackk",
+"Blanks_Detective",
+"Blast Zone",
+"Blink_Beat",
+"Block Game",
+"Block.io",
+"Block_Building",
+"Block_Buster",
+"Block_Dodger",
+"Block_Ninja",
+"Block_Vault",
+"Bomb Throw Game",
+"Boom_Blast",
+"Bottle_Flip",
+"Bounce_Ball",
+"Bouncing_Ball_Game",
+"Bow_And_Arrow",
+"Bow_Arrow",
+"Box_In_Air_Game",
+"Box_Merge",
+"Brain_Burst_Game",
+"Brain_Color_Mastermind",
+"Brain_Game",
+"Brain_card_game",
+"Breakout",
+"Brick Buster",
+"Brick_Breaker",
+"Brick_and_Ball",
+"Bubble_Blast_Game",
+"automated_rock_paper_scissor"
 ];
 
-const gameGrid = document.getElementById("gameGrid");
-
-// Auto-generate cards
-gameList.forEach(game => {
-  const card = document.createElement("div");
-  card.className = "game-card";
-  card.onclick = () => loadGame(`games/${game}/index.html`);
-  
-  const img = document.createElement("img");
-  // Placeholder thumbnail (replace with real thumbnail later)
-  img.src = `games/${game}/thumbnail.png`;
-  
-  const h3 = document.createElement("h3");
-  h3.textContent = game.replace(/_/g," ");
-  
-  card.appendChild(img);
-  card.appendChild(h3);
+// Generate game cards dynamically
+const gameGrid=document.getElementById("gameGrid");
+gameList.forEach(name=>{
+  const safeName=encodeURIComponent(name);
+  const card=document.createElement("div");
+  card.className="game-card";
+  card.innerHTML=`
+    <img src="games/${safeName}/thumbnail.png" onerror="this.src='https://via.placeholder.com/200x130?text=No+Image'">
+    <h3>${name}</h3>
+  `;
+  card.onclick=()=>{gameFrame.src=`games/${safeName}/index.html`};
   gameGrid.appendChild(card);
 });
 
-// ===== LOAD GAME =====
-function loadGame(url){
-  gameFrame.src="about:blank";
-  setTimeout(()=>gameFrame.src=url,50);
-}
-
-// ===== FILTER =====
-const search = document.getElementById("search");
-const category = document.getElementById("category");
-
+// Game Filter
 function filterGames(){
-  const t=search.value.toLowerCase();
-  const c=category.value;
+  const t=document.getElementById("search").value.toLowerCase();
+  const c=document.getElementById("category").value;
   document.querySelectorAll('.game-card').forEach(card=>{
     const okT=card.innerText.toLowerCase().includes(t);
     const okC=c==="all"||card.classList.contains(c);
@@ -375,13 +424,12 @@ function filterGames(){
   });
 }
 
-// ===== FULLSCREEN =====
+// Fullscreen
 function fullscreen(){if(gameFrame.requestFullscreen)gameFrame.requestFullscreen();}
 
-// ===== GOOGLE CLASSROOM =====
-const classroomOverlay = document.getElementById("classroomOverlay");
-function showClassroom(){classroomOverlay.style.display="flex"}
-function hideClassroom(){classroomOverlay.style.display="none"}
+// Classroom overlay
+function showClassroom(){document.getElementById("classroomOverlay").style.display="flex"}
+function hideClassroom(){document.getElementById("classroomOverlay").style.display="none"}
 </script>
 
 </body>
