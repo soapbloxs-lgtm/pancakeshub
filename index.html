@@ -224,8 +224,51 @@ margin-bottom:20px
 }
 
 @keyframes spin{to{transform:rotate(360deg)}}
-</style>
 
+/* AI STYLES */
+.ai-container{
+width:90%;
+max-width:800px;
+margin:auto;
+background:#0a0a0a;
+border:2px solid var(--neon);
+border-radius:15px;
+padding:15px;
+box-shadow:0 0 20px var(--neon);
+}
+
+.chat-box{
+height:400px;
+overflow-y:auto;
+background:black;
+padding:10px;
+border-radius:10px;
+margin-bottom:10px;
+}
+
+.message{padding:8px;margin:5px;border-radius:8px}
+.user{background:#1e1e1e;color:var(--neon);text-align:right}
+.bot{background:#111;color:#00ffcc;text-align:left}
+
+.input-area{display:flex;gap:5px}
+.input-area input{
+flex:1;
+padding:10px;
+background:black;
+border:2px solid var(--neon);
+color:white;
+border-radius:8px;
+}
+
+.input-area button{
+background:transparent;
+border:2px solid var(--pink);
+color:var(--pink);
+border-radius:8px;
+cursor:pointer;
+animation:neonPulse 3s infinite;
+}
+</style>
 </head>
 
 <body>
@@ -248,10 +291,10 @@ margin-bottom:20px
 <button onclick="goHome()">Home</button>
 <button onclick="showTab('games')">Games</button>
 <button onclick="showTab('unblocker')">UnBlocker</button>
+<button onclick="showTab('ai')">AI</button>
 </nav>
 
 <section class="tab" id="games">
-
 <div class="controls">
 <input id="search" placeholder="Search games..." oninput="filterGames()">
 <select id="category" onchange="filterGames()">
@@ -265,9 +308,7 @@ margin-bottom:20px
 </div>
 
 <div class="game-grid" id="gameGrid"></div>
-
 <iframe id="gameFrame"></iframe>
-
 </section>
 
 <section class="tab" id="unblocker">
@@ -275,8 +316,19 @@ margin-bottom:20px
 <input placeholder="Enter URL..." id="proxyURL">
 <button onclick="loadProxy()">Go</button>
 </div>
-
 <iframe id="proxyFrame"></iframe>
+</section>
+
+<!-- AI TAB -->
+<section class="tab" id="ai">
+<div class="ai-container">
+<h2>🤖 Pancake AI</h2>
+<div id="chatBox" class="chat-box"></div>
+<div class="input-area">
+<input type="text" id="userInput" placeholder="Ask anything...">
+<button onclick="sendMessage()">Send</button>
+</div>
+</div>
 </section>
 
 <button class="panicBtn" onclick="showClassroom()">Google Classroom</button>
@@ -289,134 +341,55 @@ margin-bottom:20px
 </div>
 
 <script>
+window.onload=()=>{setTimeout(()=>{const s=document.getElementById("loadingScreen");s.style.opacity="0";s.style.transition="1s";setTimeout(()=>s.remove(),1000);},4000);};
 
-/* LOADING FIX */
-window.onload=()=>{
+function openSite(){document.getElementById("cover").style.display="none";document.getElementById("navbar").style.display="block";showTab('games');}
+function goHome(){document.getElementById("navbar").style.display="none";document.getElementById("cover").style.display="flex";document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));}
+function showTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function loadGame(url){const f=document.getElementById("gameFrame");f.src="about:blank";setTimeout(()=>f.src=url,50);}
+function fullscreen(){const f=document.getElementById("gameFrame");if(f.requestFullscreen)f.requestFullscreen();}
+function filterGames(){const t=document.getElementById("search").value.toLowerCase();document.querySelectorAll('.game-card').forEach(card=>{card.style.display=card.innerText.toLowerCase().includes(t)?"block":"none";});}
+function showClassroom(){document.getElementById("classroomOverlay").style.display="flex";}
+function hideClassroom(){document.getElementById("classroomOverlay").style.display="none";}
+function loadProxy(){const url=document.getElementById("proxyURL").value;document.getElementById("proxyFrame").src=url;}
+
+/* AI */
+function sendMessage(){
+let input=document.getElementById("userInput").value;
+let chatBox=document.getElementById("chatBox");
+if(input==="") return;
+
+chatBox.innerHTML+=`<div class="message user">${input}</div>`;
+let response=getAIResponse(input);
+
 setTimeout(()=>{
-const s=document.getElementById("loadingScreen");
-s.style.opacity="0";
-s.style.transition="1s";
-setTimeout(()=>s.remove(),1000);
-},4000);
-};
+chatBox.innerHTML+=`<div class="message bot">${response}</div>`;
+chatBox.scrollTop=chatBox.scrollHeight;
+},500);
 
-function openSite(){
-document.getElementById("cover").style.display="none";
-document.getElementById("navbar").style.display="block";
-showTab('games');
+document.getElementById("userInput").value="";
 }
 
-function goHome(){
-document.getElementById("navbar").style.display="none";
-document.getElementById("cover").style.display="flex";
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+function getAIResponse(input){
+input=input.toLowerCase();
+if(input.includes("hello")) return "Hey 👋 welcome to Pancake AI!";
+if(input.includes("games")) return "Go check out the Games tab 🔥";
+if(input.includes("roblox")) return "Roblox is 🔥 what are you playing?";
+return "I'm still learning... try something else!";
 }
 
-function showTab(id){
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.getElementById(id).classList.add('active');
-}
-
-function loadGame(url){
-const f=document.getElementById("gameFrame");
-f.src="about:blank";
-setTimeout(()=>f.src=url,50);
-}
-
-function fullscreen(){
-const f=document.getElementById("gameFrame");
-if(f.requestFullscreen)f.requestFullscreen();
-}
-
-function filterGames(){
-const t=document.getElementById("search").value.toLowerCase();
-document.querySelectorAll('.game-card').forEach(card=>{
-card.style.display=card.innerText.toLowerCase().includes(t)?"block":"none";
-});
-}
-
-function showClassroom(){
-document.getElementById("classroomOverlay").style.display="flex";
-}
-
-function hideClassroom(){
-document.getElementById("classroomOverlay").style.display="none";
-}
-
-function loadProxy(){
-const url=document.getElementById("proxyURL").value;
-document.getElementById("proxyFrame").src=url;
-}
-
-/* AUTO GAME CARDS */
-
-const gameFolders=[
-"1024_Moves",
-"16_Puzzle",
-"2048",
-"2048_win",
-"2D_Breakout",
-"2D_Fighting_game",
-"3D_Car_Drive",
-"Alien_Invasion",
-"Angry_Blocks",
-"Asteroids",
-"Ball_Blast",
-"Basketball_Shot",
-"Block_Jump",
-"Brick_Destroyer",
-"Bubble_Shooter",
-"Candy_Crush_Clone",
-"Car_Racer",
-"Chess",
-"Chrome_Dino",
-"Color_Switch",
-"Crossy_Road",
-"Cube_Surfer",
-"Doodle_Jump",
-"Drift_Hunters",
-"Flappy_Bird",
-"Fruit_Ninja",
-"Geometry_Dash",
-"Helix_Jump",
-"Hill_Climb_Racing",
-"Knife_Hit",
-"Minecraft_Classic",
-"Mini_Golf",
-"Pacman",
-"Pong",
-"Snake",
-"Space_Invaders",
-"Stack",
-"Stickman_Fight",
-"Subway_Surfers",
-"Temple_Run",
-"Tetris",
-"Tower_Builder",
-"Tunnel_Rush",
-"Wordle",
-"Zombie_Shooter"
-];
-
+/* GAMES */
+const gameFolders=[ "2048","Flappy_Bird","Minecraft_Classic","Snake","Tetris","Subway_Surfers" ];
 const grid=document.getElementById("gameGrid");
 
 gameFolders.forEach(game=>{
 const card=document.createElement("div");
 card.className="game-card";
-
 card.onclick=()=>loadGame(`games/${game}/index.html`);
-
-card.innerHTML=`
-<img src="thumbnails/${game}.png"
-onerror="this.src='https://dummyimage.com/300x150/000/fff&text='+game">
-<h3>${game.replaceAll("_"," ")}</h3>
-`;
-
+card.innerHTML=`<img src="thumbnails/${game}.png" onerror="this.src='https://dummyimage.com/300x150/000/fff&text='+game"><h3>${game}</h3>`;
 grid.appendChild(card);
 });
-
 </script>
 
 </body>
 </html>
-
